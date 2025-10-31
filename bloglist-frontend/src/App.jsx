@@ -49,22 +49,28 @@ const App = () => {
     showNotification('Logged out successfully', 'success')
   }
 
-  const addBlog = async (blog) => {
-    console.log('addBlog called with:', blog)
+  const addBlog = async (blogObject) => {
     try {
-      const saved = await blogService.create(blog)
-      setBlogs(blogs.concat(saved))
-      showNotification(`a new blog "${saved.title}" by ${saved.author} added`)
+      const returnedBlog = await blogService.create(blogObject)
+      const newBlog = { ...returnedBlog, user: user }
+      setBlogs(blogs.concat(newBlog))
+      showNotification(`a new blog "${newBlog.title}" by ${newBlog.author} added`)
       blogFormRef.current.toggleVisibility()
-    } catch {
-      showNotification('Failed to create blog', 'error')
+    } catch (error) {
+      showNotification('error creating blog', 'error')
     }
   }
 
   const updateBlog = async (id, fields) => {
     try {
+      const blogToUpdate = blogs.find(b => b.id === id)
       const returned = await blogService.update(id, fields)
-      setBlogs(prev => prev.map(b => b.id !== id ? b : returned))
+      const updatedWithUser = {
+        ...returned,
+        user: blogToUpdate.user
+      }
+
+      setBlogs(blogs.map(b => b.id !== id ? b : updatedWithUser))
       showNotification(`Liked '${returned.title}'`)
     } catch (e) {
       console.error(e)
