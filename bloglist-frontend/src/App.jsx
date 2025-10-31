@@ -40,7 +40,7 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
       showNotification(`Welcome ${user.name}`, 'success')
-    } catch (exception) {
+    } catch {
       showNotification('wrong username or password', 'error')
     }
   }
@@ -58,7 +58,7 @@ const App = () => {
       setBlogs(blogs.concat(newBlog))
       showNotification(`a new blog "${newBlog.title}" by ${newBlog.author} added`)
       blogFormRef.current.toggleVisibility()
-    } catch (error) {
+    } catch {
       showNotification('error creating blog', 'error')
     }
   }

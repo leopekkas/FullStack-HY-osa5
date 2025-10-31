@@ -27,7 +27,16 @@ export default [
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }
-      ]
+      ],
+      'no-console': 0,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off', // voi ottaa käyttöön myöhemmin jos haluat PropTypet
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      indent: ['error', 2],
+      quotes: ['error', 'single'],
+      semi: ['error', 'never'],
+      'jsx-quotes': ['error', 'prefer-double'],
     }
   }
 ]

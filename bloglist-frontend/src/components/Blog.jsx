@@ -11,13 +11,6 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     marginBottom: 5
   }
 
-  const handleLike = async () => {
-    const currentLikes = Number.isFinite(blog.likes) ? blog.likes : 0
-    const newLikes = currentLikes + 1
-
-    await updateBlog(blog.id, { likes: newLikes })
-  }
-
   return (
     <div style={blogStyle}>
       <div>
