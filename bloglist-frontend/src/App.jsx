@@ -14,7 +14,9 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(setBlogs)
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+    )
   }, [])
 
   useEffect(() => {
@@ -78,6 +80,21 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (id) => {
+    const blog = blogs.find(b => b.id === id)
+    if (!window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)) return
+
+    try {
+      await blogService.remove(id)
+      setBlogs(blogs.filter(b => b.id !== id))
+      showNotification(`Deleted blog "${blog.title}"`)
+    } catch (error) {
+      console.error(error)
+      showNotification('Error deleting blog', 'error')
+    }
+  }
+
+
   return (
     <div>
       <h2>Blog app</h2>
@@ -97,7 +114,13 @@ const App = () => {
           </Togglable>
 
           {blogs.map(b => (
-            <Blog key={b.id} blog={b} updateBlog={updateBlog} />
+            <Blog
+              key={b.id}
+              blog={b}
+              updateBlog={updateBlog}
+              deleteBlog={deleteBlog}
+              user={user}
+            />
           ))}
         </>
       )}
